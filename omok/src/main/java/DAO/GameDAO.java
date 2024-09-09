@@ -1,25 +1,38 @@
 package DAO;
 
+import java.io.InputStream;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.util.Properties;
 
 public class GameDAO {
     private Connection connection = null;
 
     // MySQL 연결 정보
-    private final String url = "jdbc:mysql://localhost:3306/omok";
-    private final String username = "root";
-    private final String password = "root";
+    private String url;
+    private String username;
+    private String password;
 
     public GameDAO() {
         try {
+            Properties properties = new Properties();
+            InputStream input = getClass().getClassLoader().getResourceAsStream("application.properties");
+
+            if (input == null) {
+                return;
+            }
+
+            properties.load(input);
+
+            url = properties.getProperty("db.url");
+            username = properties.getProperty("db.username");
+            password = properties.getProperty("db.password");
+
             Class.forName("com.mysql.cj.jdbc.Driver");
             connection = DriverManager.getConnection(url, username, password);
-            System.out.println("연결 성공");
         } catch (Exception e) {
-            System.out.println("연결 실패");
             e.printStackTrace();
         }
     }
@@ -31,10 +44,8 @@ public class GameDAO {
             preparedStatement.setBoolean(1, isCustom);
             preparedStatement.setString(2, roomCode);
             preparedStatement.executeUpdate();
-            System.out.println("방 생성 성공");
         } catch (Exception e) {
             e.printStackTrace();
-            System.out.println("방 생성 실패");
         }
     }
 
@@ -47,18 +58,14 @@ public class GameDAO {
             ResultSet resultSet = preparedStatement.executeQuery();
             if (resultSet.next()) {
                 isCustom = resultSet.getBoolean("is_custom");
-            } else {
-                System.out.println("일치하는 방이 없습니다.");
             }
             query = "update gamelist set is_custom=? where game_id=?";
             preparedStatement = connection.prepareStatement(query);
             preparedStatement.setBoolean(1, !isCustom);
             preparedStatement.setInt(2, roomId);
             preparedStatement.executeUpdate();
-            System.out.println("방 전환 성공");
         } catch (Exception e) {
             e.printStackTrace();
-            System.out.println("방 전환 실패");
         }
     }
 
@@ -71,13 +78,9 @@ public class GameDAO {
             if (resultSet.next()) {
                 String temp = String.valueOf(resultSet.getInt("last_insert_id()"));
                 gameId.append(temp);
-                System.out.println("방 id 찾기 성공");
-            } else {
-                System.out.println("일치하는 방이 없습니다.");
             }
         } catch (Exception e) {
             e.printStackTrace();
-            System.out.println("방 id 찾기 실패");
         }
         return gameId;
     }
