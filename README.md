@@ -2,7 +2,7 @@
 
 Web-based concave game development project
 
-![image](https://github.com/user-attachments/assets/c9c305f0-ab95-47c7-8766-255e52d8c522)
+<img width="962" alt="로고" src="https://github.com/user-attachments/assets/c9c305f0-ab95-47c7-8766-255e52d8c522"> 
 
 
 ## Team🐥
