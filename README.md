@@ -2,7 +2,8 @@
 
 Web-based concave game development project
 
-![오목눈이](https://github.com/Jyebin/shinhan_team3_omok/assets/67955977/cb42b5d4-2d43-4ba4-a9af-7cb96b1f6b2e)
+![image](https://github.com/user-attachments/assets/c9c305f0-ab95-47c7-8766-255e52d8c522)
+
 
 ## Team🐥
 
